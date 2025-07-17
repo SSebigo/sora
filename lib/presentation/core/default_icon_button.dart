@@ -13,7 +13,7 @@ class DefaultIconButton extends StatelessWidget {
 
   final IconData icon;
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   final bool disabled;
 
