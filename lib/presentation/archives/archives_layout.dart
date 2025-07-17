@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sora/application/archives/archives_bloc.dart';
-import 'package:sora/presentation/core/default_icon_button.dart';
 import 'package:sora/presentation/archives/widgets/archives_pagination_button.dart';
+import 'package:sora/presentation/core/default_icon_button.dart';
 import 'package:sora/utils/pagination.dart';
 import 'package:sora/utils/palette.dart';
 
@@ -86,13 +86,26 @@ class ArchivesLayout extends StatelessWidget {
                         return Container();
                       }
 
-                      final pages =
-                          state.itemsCount / Pagination.archiveItemPerPage;
+                      final totalPages =
+                          (state.itemsCount / Pagination.archiveItemPerPage)
+                              .ceil();
+                      final currentPage = state.paginationIdx;
+
+                      const maxButtons = 5;
+                      const halfRange = maxButtons ~/ 2;
+
+                      final startPage = (currentPage - halfRange)
+                          .clamp(0, totalPages - maxButtons)
+                          .clamp(0, totalPages - 1);
+                      final endPage = (startPage + maxButtons - 1).clamp(
+                        0,
+                        totalPages - 1,
+                      );
 
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          if (pages > 1)
+                          if (totalPages > 1)
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 2.5,
@@ -100,14 +113,17 @@ class ArchivesLayout extends StatelessWidget {
                               child: DefaultIconButton(
                                 icon: Icons.arrow_back_ios_rounded,
                                 onPressed:
-                                    () => context.read<ArchivesBloc>().add(
-                                      ArchivesEvent.pagePressed(
-                                        state.paginationIdx - 1,
-                                      ),
-                                    ),
+                                    currentPage > 0
+                                        ? () =>
+                                            context.read<ArchivesBloc>().add(
+                                              ArchivesEvent.pagePressed(
+                                                currentPage - 1,
+                                              ),
+                                            )
+                                        : null,
                               ),
                             ),
-                          for (int i = 0; i < pages; i++)
+                          for (int i = startPage; i <= endPage; i++)
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 2.5,
@@ -119,13 +135,13 @@ class ArchivesLayout extends StatelessWidget {
                                       ArchivesEvent.pagePressed(i),
                                     ),
                                 color:
-                                    i + 1 == state.paginationIdx
+                                    i + 1 == currentPage
                                         ? Palette.black
                                         : Palette.white,
-                                isCurrentPage: i == state.paginationIdx,
+                                isCurrentPage: i == currentPage,
                               ),
                             ),
-                          if (pages > 1)
+                          if (totalPages > 1)
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 2.5,
@@ -133,11 +149,14 @@ class ArchivesLayout extends StatelessWidget {
                               child: DefaultIconButton(
                                 icon: Icons.arrow_forward_ios_rounded,
                                 onPressed:
-                                    () => context.read<ArchivesBloc>().add(
-                                      ArchivesEvent.pagePressed(
-                                        state.paginationIdx + 1,
-                                      ),
-                                    ),
+                                    currentPage < totalPages - 1
+                                        ? () =>
+                                            context.read<ArchivesBloc>().add(
+                                              ArchivesEvent.pagePressed(
+                                                currentPage + 1,
+                                              ),
+                                            )
+                                        : null,
                               ),
                             ),
                         ],
