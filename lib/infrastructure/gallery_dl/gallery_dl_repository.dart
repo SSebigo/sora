@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:drift/drift.dart';
@@ -97,12 +98,32 @@ class GalleryDLRepository implements IGalleryDLRepository {
   @override
   Stream<Result<DownloadInfo, GalleryDLFailure>> batchDownload(
     List<DownloadInfo> downloadInfos,
-  ) {
-    final stream = Stream.fromFutures([
-      for (final info in downloadInfos) download(info),
-    ]);
+  ) async* {
+    const maxConcurrentDownloads = 3;
+    final queue = List<DownloadInfo>.from(downloadInfos);
+    final activeDownloads = <Future<Result<DownloadInfo, GalleryDLFailure>>>[];
 
-    return stream;
+    while (queue.isNotEmpty || activeDownloads.isNotEmpty) {
+      while (activeDownloads.length < maxConcurrentDownloads &&
+          queue.isNotEmpty) {
+        final info = queue.removeAt(0);
+        activeDownloads.add(download(info));
+      }
+
+      if (activeDownloads.isNotEmpty) {
+        final racers = <Future<int>>[];
+        for (var i = 0; i < activeDownloads.length; i++) {
+          racers.add(activeDownloads[i].then((_) => i));
+        }
+
+        final completedIndex = await Future.any(racers);
+        final result = await activeDownloads[completedIndex];
+
+        await activeDownloads.removeAt(completedIndex);
+
+        yield result;
+      }
+    }
   }
 
   @override
