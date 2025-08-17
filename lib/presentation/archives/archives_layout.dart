@@ -44,7 +44,7 @@ class ArchivesLayout extends StatelessWidget {
                         final downloadInfo = state.downloadInfos[idx];
 
                         return ListTile(
-                          title: Text(
+                          title: SelectableText(
                             downloadInfo.url.getOrCrash(),
                             style: const TextStyle(
                               fontWeight: FontWeight.w700,
