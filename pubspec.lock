@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.2"
+  clipboard:
+    dependency: "direct main"
+    description:
+      name: clipboard
+      sha256: "1920c0337f8808be4166c5f1b236301ff381ef69633b0757c502d97f1f740102"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   clock:
     dependency: transitive
     description:

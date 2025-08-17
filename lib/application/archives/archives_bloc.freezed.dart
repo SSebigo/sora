@@ -248,6 +248,72 @@ as int,
 }
 
 /// @nodoc
+
+
+class CopyURLToClipboardPressed implements ArchivesEvent {
+  const CopyURLToClipboardPressed(this.url);
+  
+
+ final  URL url;
+
+/// Create a copy of ArchivesEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CopyURLToClipboardPressedCopyWith<CopyURLToClipboardPressed> get copyWith => _$CopyURLToClipboardPressedCopyWithImpl<CopyURLToClipboardPressed>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CopyURLToClipboardPressed&&(identical(other.url, url) || other.url == url));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,url);
+
+@override
+String toString() {
+  return 'ArchivesEvent.copyURLToClipboardPressed(url: $url)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CopyURLToClipboardPressedCopyWith<$Res> implements $ArchivesEventCopyWith<$Res> {
+  factory $CopyURLToClipboardPressedCopyWith(CopyURLToClipboardPressed value, $Res Function(CopyURLToClipboardPressed) _then) = _$CopyURLToClipboardPressedCopyWithImpl;
+@useResult
+$Res call({
+ URL url
+});
+
+
+
+
+}
+/// @nodoc
+class _$CopyURLToClipboardPressedCopyWithImpl<$Res>
+    implements $CopyURLToClipboardPressedCopyWith<$Res> {
+  _$CopyURLToClipboardPressedCopyWithImpl(this._self, this._then);
+
+  final CopyURLToClipboardPressed _self;
+  final $Res Function(CopyURLToClipboardPressed) _then;
+
+/// Create a copy of ArchivesEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? url = null,}) {
+  return _then(CopyURLToClipboardPressed(
+null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as URL,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$ArchivesState {
 
  Option<Result<Unit, CoreFailure>> get failureOrOption; List<DownloadInfo> get downloadInfos; int get itemsCount; int get paginationIdx;

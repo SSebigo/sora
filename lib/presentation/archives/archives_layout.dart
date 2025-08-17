@@ -44,7 +44,7 @@ class ArchivesLayout extends StatelessWidget {
                         final downloadInfo = state.downloadInfos[idx];
 
                         return ListTile(
-                          title: SelectableText(
+                          title: Text(
                             downloadInfo.url.getOrCrash(),
                             style: const TextStyle(
                               fontWeight: FontWeight.w700,
@@ -57,12 +57,33 @@ class ArchivesLayout extends StatelessWidget {
                                 : '',
                             style: const TextStyle(color: Palette.grey),
                           ),
-                          trailing: DefaultIconButton(
-                            icon: Icons.open_in_new_rounded,
-                            onPressed:
-                                () => context.read<ArchivesBloc>().add(
-                                  ArchivesEvent.openInNewPressed(downloadInfo),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
                                 ),
+                                child: DefaultIconButton(
+                                  icon: Icons.content_copy_rounded,
+                                  onPressed:
+                                      () => context.read<ArchivesBloc>().add(
+                                        ArchivesEvent.copyURLToClipboardPressed(
+                                          downloadInfo.url,
+                                        ),
+                                      ),
+                                ),
+                              ),
+                              DefaultIconButton(
+                                icon: Icons.open_in_new_rounded,
+                                onPressed:
+                                    () => context.read<ArchivesBloc>().add(
+                                      ArchivesEvent.openInNewPressed(
+                                        downloadInfo,
+                                      ),
+                                    ),
+                              ),
+                            ],
                           ),
                         );
                       },

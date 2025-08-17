@@ -9,6 +9,7 @@ environment:
 dependencies:
   auto_route: ^10.0.1
   bloc: ^9.0.0
+  clipboard: ^2.0.2
   collection: ^1.19.1
   cupertino_icons: ^1.0.8
   drift: ^2.26.0

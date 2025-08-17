@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:clipboard/clipboard.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:oxidized/oxidized.dart';
@@ -9,6 +10,7 @@ import 'package:process_run/shell.dart';
 import 'package:sora/domain/core/download_info.dart';
 import 'package:sora/domain/core/download_status.dart';
 import 'package:sora/domain/core/non_empty_string.dart';
+import 'package:sora/domain/core/url.dart';
 import 'package:sora/domain/gallery_dl/gallery_dl_failure.dart';
 import 'package:sora/domain/gallery_dl/i_gallery_dl_repository.dart';
 import 'package:sora/infrastructure/core/download_info_dto.dart';
@@ -247,6 +249,18 @@ class GalleryDLRepository implements IGalleryDLRepository {
           ),
         ),
       );
+    }
+  }
+
+  @override
+  Future<Result<Unit, GalleryDLFailure>> copyURLToClipboard(URL url) async {
+    try {
+      final rawURL = url.getOrCrash();
+
+      await FlutterClipboard.copy(rawURL);
+      return const Ok(unit);
+    } on Exception catch (_) {
+      return Err(GalleryDLFailure.failedToCopyToClipboard(url));
     }
   }
 }

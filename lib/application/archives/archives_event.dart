@@ -10,4 +10,7 @@ class ArchivesEvent with _$ArchivesEvent {
       OpenInNewPressed;
 
   const factory ArchivesEvent.pagePressed(int idx) = PagePressed;
+
+  const factory ArchivesEvent.copyURLToClipboardPressed(URL url) =
+      CopyURLToClipboardPressed;
 }
