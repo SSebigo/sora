@@ -7,7 +7,7 @@ environment:
   sdk: ^3.7.2
 
 dependencies:
-  auto_route: ^10.0.1
+  auto_route: ^10.1.2
   bloc: ^9.0.0
   clipboard: ^2.0.2
   collection: ^1.19.1
@@ -39,7 +39,7 @@ dependencies:
   uuid: ^4.5.1
 
 dev_dependencies:
-  auto_route_generator: ^10.0.1
+  auto_route_generator: ^10.2.4
   build_runner: ^2.4.15
   drift_dev: ^2.26.0
   flutter_launcher_icons: ^0.14.3
