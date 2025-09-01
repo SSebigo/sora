@@ -4,5 +4,6 @@ class Routes {
   static const String library = 'library';
   static const String settings = 'settings';
   static const String archives = 'archives';
+  static const String duplicates = 'duplicates';
   static const String uid = '/:uid';
 }

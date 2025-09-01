@@ -13,7 +13,7 @@ import 'package:auto_route/auto_route.dart' as _i6;
 import 'package:sora/presentation/archives/archives_page.dart' as _i1;
 import 'package:sora/presentation/dashboard/dashboard_page.dart' as _i2;
 import 'package:sora/presentation/downloads/downloads_page.dart' as _i3;
-import 'package:sora/presentation/library/library_page.dart' as _i4;
+import 'package:sora/presentation/duplicates/duplicates_page.dart' as _i4;
 import 'package:sora/presentation/settings/settings_page.dart' as _i5;
 
 /// generated route for
@@ -65,17 +65,17 @@ class DownloadsRoute extends _i6.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.LibraryPage]
-class LibraryRoute extends _i6.PageRouteInfo<void> {
-  const LibraryRoute({List<_i6.PageRouteInfo>? children})
-    : super(LibraryRoute.name, initialChildren: children);
+/// [_i4.DuplicatesPage]
+class DuplicatesRoute extends _i6.PageRouteInfo<void> {
+  const DuplicatesRoute({List<_i6.PageRouteInfo>? children})
+    : super(DuplicatesRoute.name, initialChildren: children);
 
-  static const String name = 'LibraryRoute';
+  static const String name = 'DuplicatesRoute';
 
   static _i6.PageInfo page = _i6.PageInfo(
     name,
     builder: (data) {
-      return const _i4.LibraryPage();
+      return const _i4.DuplicatesPage();
     },
   );
 }

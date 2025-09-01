@@ -1,7 +1,7 @@
 name: sora
 description: "Sora is an open-source GUI for gallery-dl"
 publish_to: 'none'
-version: 0.0.1+1
+version: 0.0.2+2
 
 environment:
   sdk: ^3.7.2
@@ -11,10 +11,12 @@ dependencies:
   bloc: ^9.0.0
   clipboard: ^2.0.2
   collection: ^1.19.1
+  crypto: ^3.0.6
   cupertino_icons: ^1.0.8
   drift: ^2.26.0
   drift_flutter: ^0.2.4
   equatable: ^2.0.7
+  file_picker: ^8.1.5
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.0
@@ -22,6 +24,7 @@ dependencies:
     sdk: flutter
   freezed_annotation: ^3.0.0
   get_it: ^8.0.3
+  image: ^4.3.0
   injectable: ^2.5.0
   intl: 0.20.2
   logger: ^2.5.0

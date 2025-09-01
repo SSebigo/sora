@@ -14,8 +14,12 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:sora/application/archives/archives_bloc.dart' as _i357;
 import 'package:sora/application/dashboard/dashboard_cubit.dart' as _i792;
 import 'package:sora/application/downloads/downloads_bloc.dart' as _i614;
+import 'package:sora/application/duplicates/duplicates_bloc.dart' as _i642;
+import 'package:sora/domain/duplicates/i_duplicates_repository.dart' as _i487;
 import 'package:sora/domain/gallery_dl/i_gallery_dl_repository.dart' as _i1058;
 import 'package:sora/infrastructure/core/drift_injectable_module.dart' as _i759;
+import 'package:sora/infrastructure/duplicates/duplicates_repository.dart'
+    as _i385;
 import 'package:sora/infrastructure/gallery_dl/gallery_dl_repository.dart'
     as _i136;
 
@@ -32,8 +36,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => iDriftInjectableModule.drift,
       preResolve: true,
     );
+    gh.lazySingleton<_i487.IDuplicatesRepository>(
+      () => _i385.DuplicatesRepository(),
+    );
     gh.lazySingleton<_i1058.IGalleryDLRepository>(
       () => _i136.GalleryDLRepository(gh<_i759.DriftSoraDatabase>()),
+    );
+    gh.factory<_i642.DuplicatesBloc>(
+      () => _i642.DuplicatesBloc(gh<_i487.IDuplicatesRepository>()),
     );
     gh.factory<_i357.ArchivesBloc>(
       () => _i357.ArchivesBloc(gh<_i1058.IGalleryDLRepository>()),

@@ -1,6 +1,7 @@
 {
     "dashboard": {
         "downloads": "Téléchargements",
-        "archives": "Archives"
+        "archives": "Archives",
+        "duplicates": "Doublons"
     }
 }

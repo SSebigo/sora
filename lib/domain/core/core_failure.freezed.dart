@@ -15,23 +15,18 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CoreFailure {
 
- GalleryDLFailure get f;
-/// Create a copy of CoreFailure
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CoreFailureCopyWith<CoreFailure> get copyWith => _$CoreFailureCopyWithImpl<CoreFailure>(this as CoreFailure, _$identity);
+ Object get f;
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CoreFailure&&(identical(other.f, f) || other.f == f));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CoreFailure&&const DeepCollectionEquality().equals(other.f, f));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,f);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(f));
 
 @override
 String toString() {
@@ -42,43 +37,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class $CoreFailureCopyWith<$Res>  {
-  factory $CoreFailureCopyWith(CoreFailure value, $Res Function(CoreFailure) _then) = _$CoreFailureCopyWithImpl;
-@useResult
-$Res call({
- GalleryDLFailure f
-});
-
-
-$GalleryDLFailureCopyWith<$Res> get f;
-
-}
-/// @nodoc
-class _$CoreFailureCopyWithImpl<$Res>
-    implements $CoreFailureCopyWith<$Res> {
-  _$CoreFailureCopyWithImpl(this._self, this._then);
-
-  final CoreFailure _self;
-  final $Res Function(CoreFailure) _then;
-
-/// Create a copy of CoreFailure
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? f = null,}) {
-  return _then(_self.copyWith(
-f: null == f ? _self.f : f // ignore: cast_nullable_to_non_nullable
-as GalleryDLFailure,
-  ));
-}
-/// Create a copy of CoreFailure
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$GalleryDLFailureCopyWith<$Res> get f {
-  
-  return $GalleryDLFailureCopyWith<$Res>(_self.f, (value) {
-    return _then(_self.copyWith(f: value));
-  });
-}
+class $CoreFailureCopyWith<$Res>  {
+$CoreFailureCopyWith(CoreFailure _, $Res Function(CoreFailure) __);
 }
 
 
@@ -93,7 +53,7 @@ class GalleryDL implements CoreFailure {
 
 /// Create a copy of CoreFailure
 /// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $GalleryDLCopyWith<GalleryDL> get copyWith => _$GalleryDLCopyWithImpl<GalleryDL>(this, _$identity);
 
@@ -119,13 +79,13 @@ String toString() {
 /// @nodoc
 abstract mixin class $GalleryDLCopyWith<$Res> implements $CoreFailureCopyWith<$Res> {
   factory $GalleryDLCopyWith(GalleryDL value, $Res Function(GalleryDL) _then) = _$GalleryDLCopyWithImpl;
-@override @useResult
+@useResult
 $Res call({
  GalleryDLFailure f
 });
 
 
-@override $GalleryDLFailureCopyWith<$Res> get f;
+$GalleryDLFailureCopyWith<$Res> get f;
 
 }
 /// @nodoc
@@ -138,7 +98,7 @@ class _$GalleryDLCopyWithImpl<$Res>
 
 /// Create a copy of CoreFailure
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? f = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? f = null,}) {
   return _then(GalleryDL(
 null == f ? _self.f : f // ignore: cast_nullable_to_non_nullable
 as GalleryDLFailure,
@@ -152,6 +112,81 @@ as GalleryDLFailure,
 $GalleryDLFailureCopyWith<$Res> get f {
   
   return $GalleryDLFailureCopyWith<$Res>(_self.f, (value) {
+    return _then(_self.copyWith(f: value));
+  });
+}
+}
+
+/// @nodoc
+
+
+class Duplicates implements CoreFailure {
+  const Duplicates(this.f);
+  
+
+@override final  DuplicatesFailure f;
+
+/// Create a copy of CoreFailure
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$DuplicatesCopyWith<Duplicates> get copyWith => _$DuplicatesCopyWithImpl<Duplicates>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Duplicates&&(identical(other.f, f) || other.f == f));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,f);
+
+@override
+String toString() {
+  return 'CoreFailure.duplicates(f: $f)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $DuplicatesCopyWith<$Res> implements $CoreFailureCopyWith<$Res> {
+  factory $DuplicatesCopyWith(Duplicates value, $Res Function(Duplicates) _then) = _$DuplicatesCopyWithImpl;
+@useResult
+$Res call({
+ DuplicatesFailure f
+});
+
+
+$DuplicatesFailureCopyWith<$Res> get f;
+
+}
+/// @nodoc
+class _$DuplicatesCopyWithImpl<$Res>
+    implements $DuplicatesCopyWith<$Res> {
+  _$DuplicatesCopyWithImpl(this._self, this._then);
+
+  final Duplicates _self;
+  final $Res Function(Duplicates) _then;
+
+/// Create a copy of CoreFailure
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? f = null,}) {
+  return _then(Duplicates(
+null == f ? _self.f : f // ignore: cast_nullable_to_non_nullable
+as DuplicatesFailure,
+  ));
+}
+
+/// Create a copy of CoreFailure
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$DuplicatesFailureCopyWith<$Res> get f {
+  
+  return $DuplicatesFailureCopyWith<$Res>(_self.f, (value) {
     return _then(_self.copyWith(f: value));
   });
 }

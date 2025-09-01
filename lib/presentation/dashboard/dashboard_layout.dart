@@ -23,6 +23,11 @@ class DashboardLayout extends StatelessWidget {
       icon: Icons.archive_rounded,
       route: const ArchivesRoute(),
     ),
+    DashboardItem(
+      title: t.dashboard.duplicates,
+      icon: Icons.photo_library_rounded,
+      route: const DuplicatesRoute(),
+    ),
   ];
 
   @override
