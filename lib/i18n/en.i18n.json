@@ -1,6 +1,7 @@
 {
     "dashboard": {
         "downloads": "Downloads",
-        "archives": "Archives"
+        "archives": "Archives",
+        "duplicates": "Duplicates"
     }
 }

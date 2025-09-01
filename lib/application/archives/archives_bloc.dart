@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:oxidized/oxidized.dart';
 import 'package:sora/domain/core/core_failure.dart';
 import 'package:sora/domain/core/download_info.dart';
+import 'package:sora/domain/core/url.dart';
 import 'package:sora/domain/gallery_dl/i_gallery_dl_repository.dart';
 import 'package:sora/utils/pagination.dart';
 
@@ -49,6 +50,11 @@ class ArchivesBloc extends Bloc<ArchivesEvent, ArchivesState> {
       emit(state.copyWith(paginationIdx: newIdx));
 
       add(const ArchivesEvent.itemsCounted());
+    });
+    on<CopyURLToClipboardPressed>((event, emit) async {
+      (await _galleryDLRepository.copyURLToClipboard(
+        event.url,
+      )).match((_) {}, (failure) {});
     });
   }
 

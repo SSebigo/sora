@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:clipboard/clipboard.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:oxidized/oxidized.dart';
@@ -8,6 +10,7 @@ import 'package:process_run/shell.dart';
 import 'package:sora/domain/core/download_info.dart';
 import 'package:sora/domain/core/download_status.dart';
 import 'package:sora/domain/core/non_empty_string.dart';
+import 'package:sora/domain/core/url.dart';
 import 'package:sora/domain/gallery_dl/gallery_dl_failure.dart';
 import 'package:sora/domain/gallery_dl/i_gallery_dl_repository.dart';
 import 'package:sora/infrastructure/core/download_info_dto.dart';
@@ -97,12 +100,32 @@ class GalleryDLRepository implements IGalleryDLRepository {
   @override
   Stream<Result<DownloadInfo, GalleryDLFailure>> batchDownload(
     List<DownloadInfo> downloadInfos,
-  ) {
-    final stream = Stream.fromFutures([
-      for (final info in downloadInfos) download(info),
-    ]);
+  ) async* {
+    const maxConcurrentDownloads = 3;
+    final queue = List<DownloadInfo>.from(downloadInfos);
+    final activeDownloads = <Future<Result<DownloadInfo, GalleryDLFailure>>>[];
 
-    return stream;
+    while (queue.isNotEmpty || activeDownloads.isNotEmpty) {
+      while (activeDownloads.length < maxConcurrentDownloads &&
+          queue.isNotEmpty) {
+        final info = queue.removeAt(0);
+        activeDownloads.add(download(info));
+      }
+
+      if (activeDownloads.isNotEmpty) {
+        final racers = <Future<int>>[];
+        for (var i = 0; i < activeDownloads.length; i++) {
+          racers.add(activeDownloads[i].then((_) => i));
+        }
+
+        final completedIndex = await Future.any(racers);
+        final result = await activeDownloads[completedIndex];
+
+        await activeDownloads.removeAt(completedIndex);
+
+        yield result;
+      }
+    }
   }
 
   @override
@@ -226,6 +249,18 @@ class GalleryDLRepository implements IGalleryDLRepository {
           ),
         ),
       );
+    }
+  }
+
+  @override
+  Future<Result<Unit, GalleryDLFailure>> copyURLToClipboard(URL url) async {
+    try {
+      final rawURL = url.getOrCrash();
+
+      await FlutterClipboard.copy(rawURL);
+      return const Ok(unit);
+    } on Exception catch (_) {
+      return Err(GalleryDLFailure.failedToCopyToClipboard(url));
     }
   }
 }

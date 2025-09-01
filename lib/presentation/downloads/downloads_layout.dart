@@ -5,6 +5,7 @@ import 'package:sora/domain/core/core_failure.dart';
 import 'package:sora/domain/core/download_status.dart';
 import 'package:sora/domain/core/unique_id.dart';
 import 'package:sora/domain/core/value_failure.dart';
+import 'package:sora/domain/duplicates/duplicates_failure.dart';
 import 'package:sora/domain/gallery_dl/gallery_dl_failure.dart';
 import 'package:sora/presentation/core/default_button.dart';
 import 'package:sora/presentation/core/default_icon_button.dart';
@@ -55,6 +56,7 @@ class _DownloadsLayoutState extends State<DownloadsLayout> {
                 err: (err) {
                   final failure = switch (err) {
                     GalleryDL(:final GalleryDLFailure f) => f,
+                    Duplicates(:final DuplicatesFailure f) => f,
                   };
 
                   final _ = switch (failure) {

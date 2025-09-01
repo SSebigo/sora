@@ -259,6 +259,72 @@ $DownloadInfoCopyWith<$Res> get downloadInfo {
 /// @nodoc
 
 
+class GalleryDLFailedToCopyToClipboard implements GalleryDLFailure {
+  const GalleryDLFailedToCopyToClipboard(this.url);
+  
+
+ final  URL url;
+
+/// Create a copy of GalleryDLFailure
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GalleryDLFailedToCopyToClipboardCopyWith<GalleryDLFailedToCopyToClipboard> get copyWith => _$GalleryDLFailedToCopyToClipboardCopyWithImpl<GalleryDLFailedToCopyToClipboard>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GalleryDLFailedToCopyToClipboard&&(identical(other.url, url) || other.url == url));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,url);
+
+@override
+String toString() {
+  return 'GalleryDLFailure.failedToCopyToClipboard(url: $url)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $GalleryDLFailedToCopyToClipboardCopyWith<$Res> implements $GalleryDLFailureCopyWith<$Res> {
+  factory $GalleryDLFailedToCopyToClipboardCopyWith(GalleryDLFailedToCopyToClipboard value, $Res Function(GalleryDLFailedToCopyToClipboard) _then) = _$GalleryDLFailedToCopyToClipboardCopyWithImpl;
+@useResult
+$Res call({
+ URL url
+});
+
+
+
+
+}
+/// @nodoc
+class _$GalleryDLFailedToCopyToClipboardCopyWithImpl<$Res>
+    implements $GalleryDLFailedToCopyToClipboardCopyWith<$Res> {
+  _$GalleryDLFailedToCopyToClipboardCopyWithImpl(this._self, this._then);
+
+  final GalleryDLFailedToCopyToClipboard _self;
+  final $Res Function(GalleryDLFailedToCopyToClipboard) _then;
+
+/// Create a copy of GalleryDLFailure
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? url = null,}) {
+  return _then(GalleryDLFailedToCopyToClipboard(
+null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as URL,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
 class GalleryDLUnexpected implements GalleryDLFailure {
   const GalleryDLUnexpected({this.downloadInfo});
   

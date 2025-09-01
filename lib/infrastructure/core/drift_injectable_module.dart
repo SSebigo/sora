@@ -13,7 +13,7 @@ class DriftSoraDatabase extends _$DriftSoraDatabase {
     : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
@@ -21,6 +21,17 @@ class DriftSoraDatabase extends _$DriftSoraDatabase {
       native: const DriftNativeOptions(databaseDirectory: getDatabasePath),
     );
   }
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (Migrator m) async {
+      await m.createAll();
+    },
+    onUpgrade: (Migrator m, int from, int to) async {
+      // Empty - no actual schema changes needed
+      // This handles the "accidental" bump from 1 to 2
+    },
+  );
 
   static Future<String> getDatabasePath() async {
     final directory = await getApplicationSupportDirectory();

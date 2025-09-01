@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sora/domain/core/download_info.dart';
+import 'package:sora/domain/core/url.dart';
 
 part 'gallery_dl_failure.freezed.dart';
 
@@ -16,6 +17,9 @@ sealed class GalleryDLFailure with _$GalleryDLFailure {
 
   const factory GalleryDLFailure.invalidURL(DownloadInfo downloadInfo) =
       GalleryDLInvalidURL;
+
+  const factory GalleryDLFailure.failedToCopyToClipboard(URL url) =
+      GalleryDLFailedToCopyToClipboard;
 
   const factory GalleryDLFailure.unexpected({DownloadInfo? downloadInfo}) =
       GalleryDLUnexpected;

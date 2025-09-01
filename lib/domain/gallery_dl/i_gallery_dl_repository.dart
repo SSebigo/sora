@@ -1,5 +1,6 @@
 import 'package:oxidized/oxidized.dart';
 import 'package:sora/domain/core/download_info.dart';
+import 'package:sora/domain/core/url.dart';
 import 'package:sora/domain/gallery_dl/gallery_dl_failure.dart';
 
 abstract class IGalleryDLRepository {
@@ -33,4 +34,6 @@ abstract class IGalleryDLRepository {
   Future<Result<Unit, GalleryDLFailure>> launchContentURL(
     DownloadInfo downloadInfo,
   );
+
+  Future<Result<Unit, GalleryDLFailure>> copyURLToClipboard(URL url);
 }
