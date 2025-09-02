@@ -30,12 +30,6 @@ jobs:
         with:
           channel: "stable"
 
-      - name: Setup Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Install the CLI tool
-        run: cargo install 'flutter_rust_bridge_codegen'
-
       - name: flutter pub get
         run: flutter pub get
 
@@ -59,7 +53,6 @@ jobs:
           mkdir -p AppDir/usr/share/icons
           # Copy built files
           cp -r build/linux/x64/release/bundle/* AppDir/usr/bin/
-          cp -rL linux/packaging/icons/* AppDir/usr/share/icons
           # Scan AppDir/usr/bin/lib for existing libraries to exclude them from linuxdeploy packaging
           EXCLUDE_LIBS=$(find AppDir/usr/bin/lib -type f -name "*.so*" -exec basename {} \; | sort -u)
           # Add --exclude-library flag to each found library
@@ -95,7 +88,6 @@ jobs:
           cp -r build/linux/x64/release/bundle rpm_build/SOURCES/sora-${VERSION}
           tar czf rpm_build/SOURCES/sora-${VERSION}.tar.gz -C rpm_build/SOURCES sora-${VERSION}
           mkdir -p rpm_build/SOURCES/usr/share/icons
-          cp -rL linux/packaging/icons/* rpm_build/SOURCES/usr/share/icons
           cp linux/sora.desktop rpm_build/SOURCES/
           # RPM Spec File
           cat <<EOF > rpm_build/SPECS/sora.spec
