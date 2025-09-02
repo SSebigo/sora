@@ -51,76 +51,87 @@ jobs:
       
       - name: Create AppImage
         run: |
+          # Move Zip-file outside the bundle dir to avoid including it in the AppImage
+          mv build/linux/x64/release/bundle/Sora-*.zip build/linux/x64/release/
           # Create fresh AppDir structure
           rm -rf AppDir
           mkdir -p AppDir/usr/bin
-          mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+          mkdir -p AppDir/usr/share/icons
           # Copy built files
           cp -r build/linux/x64/release/bundle/* AppDir/usr/bin/
-          cp assets/images/sora_logo.png AppDir/usr/share/icons/hicolor/256x256/apps/sora.png
-          cp assets/images/sora_logo.png AppDir/sora.png
-          # Create desktop file in AppDir root
-          cat <<EOF > AppDir/sora.desktop
-          [Desktop Entry]
-          Name=sora
-          Exec=usr/bin/sora
-          Icon=sora
-          Type=Application
-          Categories=Utility;
-          EOF
+          cp -rL linux/packaging/icons/* AppDir/usr/share/icons
+          # Scan AppDir/usr/bin/lib for existing libraries to exclude them from linuxdeploy packaging
+          EXCLUDE_LIBS=$(find AppDir/usr/bin/lib -type f -name "*.so*" -exec basename {} \; | sort -u)
+          # Add --exclude-library flag to each found library
+          for lib in $EXCLUDE_LIBS; do
+            EXCLUDE_ARGS+=" --exclude-library $lib"
+          done
+          # Copy desktop file to AppDir root
+          cp linux/sora.desktop AppDir/sora.desktop
           # Create AppRun file
           cat <<EOF > AppDir/AppRun
           #!/bin/sh
           SELF=\$(readlink -f "\$0")
           HERE=\${SELF%/*}
           export PATH="\${HERE}/usr/bin/:\${PATH}"
-          export LD_LIBRARY_PATH="\${HERE}/usr/lib/:\${LD_LIBRARY_PATH}"
+          export LD_LIBRARY_PATH="\${HERE}/usr/bin/lib/:\${HERE}/usr/lib/:\${LD_LIBRARY_PATH}"
           exec "\${HERE}/usr/bin/sora" "\$@"
           EOF
           chmod +x AppDir/AppRun
           # Make AppImage
-          /usr/local/bin/appimagetool AppDir
+          /usr/local/bin/linuxdeploy \
+            --appdir AppDir \
+            --desktop-file AppDir/sora.desktop \
+            --icon-file AppDir/usr/share/icons/hicolor/512x512/apps/sora.png \
+            --executable AppDir/usr/bin/sora \
+            $EXCLUDE_ARGS \
+            --output appimage
           mv $(find . -type f -name "*.AppImage") build/linux/x64/release/Sora-${{ github.ref_name }}-linux.AppImage
       
       - name: Create RPM Package
         run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //; s/+.*//')
           mkdir -p rpm_build/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-          cp -r build/linux/x64/release/bundle rpm_build/SOURCES/sora-1.0.0
-          tar czf rpm_build/SOURCES/sora-1.0.0.tar.gz -C rpm_build/SOURCES sora-1.0.0
-          mkdir -p rpm_build/SOURCES/usr/share/icons/hicolor/256x256/apps
-          cp assets/images/sora_logo.png rpm_build/SOURCES/usr/share/icons/hicolor/256x256/apps/sora.png
+          cp -r build/linux/x64/release/bundle rpm_build/SOURCES/sora-${VERSION}
+          tar czf rpm_build/SOURCES/sora-${VERSION}.tar.gz -C rpm_build/SOURCES sora-${VERSION}
+          mkdir -p rpm_build/SOURCES/usr/share/icons
+          cp -rL linux/packaging/icons/* rpm_build/SOURCES/usr/share/icons
+          cp linux/sora.desktop rpm_build/SOURCES/
           # RPM Spec File
           cat <<EOF > rpm_build/SPECS/sora.spec
           Name: sora
-          Version: 1.0.0
+          Version: ${VERSION}
           Release: 1%{?dist}
           Summary: Sora is an open-source GUI for gallery-dl
           License: MIT
           Source0: %{name}-%{version}.tar.gz
           BuildArch: x86_64
+
           %description
           Sora is an open-source GUI for gallery-dl.
+
           %prep
           %setup -q
+
           %install
           mkdir -p %{buildroot}/usr/bin
           mkdir -p %{buildroot}/usr/share/applications
           mkdir -p %{buildroot}/usr/share/icons/hicolor/256x256/apps
           cp -r * %{buildroot}/usr/bin/
           cp -r %{_sourcedir}/usr/share/* %{buildroot}/usr/share/
-          cat <<EOL > %{buildroot}/usr/share/applications/sora.desktop
-          [Desktop Entry]
-          Name=sora
-          Exec=/usr/bin/sora
-          Icon=sora
-          Type=Application
-          Categories=Utility;
-          EOL
+          cp %{_sourcedir}/sora.desktop %{buildroot}/usr/share/applications/sora.desktop
+          
           %files
           /usr/bin/*
           /usr/share/applications/sora.desktop
+          /usr/share/icons/hicolor/16x16/apps/sora.png
+          /usr/share/icons/hicolor/32x32/apps/sora.png
+          /usr/share/icons/hicolor/64x64/apps/sora.png
+          /usr/share/icons/hicolor/128x128/apps/sora.png
           /usr/share/icons/hicolor/256x256/apps/sora.png
+          /usr/share/icons/hicolor/512x512/apps/sora.png
           EOF
+
           rpmbuild --define "_topdir $(pwd)/rpm_build" -ba rpm_build/SPECS/sora.spec
           mv rpm_build/RPMS/x86_64/*.rpm build/linux/x64/release/Sora-${{ github.ref_name }}-linux.rpm
       
@@ -129,14 +140,14 @@ jobs:
         with:
           name: Sora-${{ github.ref_name }}-linux-zip
           path: |
-            build/linux/x64/release/bundle/Sora-*.zip
+            build/linux/x64/release/Sora-*.zip
             build/linux/x64/release/Sora-*.AppImage
             build/linux/x64/release/Sora-*.rpm
       - name: release packages linux zip
         uses: ncipollo/release-action@v1
         with:
           artifacts: |
-            build/linux/x64/release/bundle/Sora-*.zip
+            build/linux/x64/release/Sora-*.zip
             build/linux/x64/release/Sora-*.AppImage
             build/linux/x64/release/Sora-*.rpm
           allowUpdates: true
