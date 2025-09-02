@@ -40,10 +40,10 @@ jobs:
         run: flutter pub get
 
       - name: build linux
-        run: flutter build linux --release
+        run: flutter build linux --release --verbose
 
       - name: Zip
-        uses: thedoctor0/zip-release@master
+        uses: thedoctor0/zip-release@main
         with:
           type: "zip"
           filename: Sora-${{ github.ref_name }}-linux.zip
